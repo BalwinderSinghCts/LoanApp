@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <h1>Filter Data</h1>
+            <hr>
+            <div class="row" [formGroup]="filterFormGroup">
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">First Name</label>
+                        <input ngModel type="text" formControlName="firstname" class="form-control"
+                            id="exampleInputfirstname" aria-describedby="firstnameHelp" placeholder="Enter First name">
+
+                        <!-- <label id="emailHelp"
+                        class="alert alert-danger mt-2">Email is required</label> -->
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputLast">Last Name</label>
+                        <input ngModel type="text" formControlName="lastname" class="form-control"
+                            id="exampleInputlastName" aria-describedby="lastnameHelp" placeholder="Enter Last Name">
+
+                        <!-- <label id="emailHelp"
+                        class="alert alert-danger mt-2">Email is required</label> -->
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleInputloanNumber">Loan Number</label>
+                        <input ngModel type="text" formControlName="loannumber" class="form-control"
+                            id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Loan Number">
+
+                        <!-- <label id="emailHelp"
+                        class="alert alert-danger mt-2">Email is required</label> -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    <button type="button" (click)="search()" class="btn btn-primary ">
+                        Search
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <hr>
+                <div class="form-group">
+                    <h1>Loan View List</h1>
+                </div>
+                <hr>
+            </div>
+            <div class="col-md-10">
+                <app-viewlist [loandatalist]="loanDataList"></app-viewlist>
+            </div>
+        </div>
+    </div>
+
+</div>
