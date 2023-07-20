@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'LoanApp';
+  isLoagin = false;
+  /**
+   *
+   */
+  constructor() {
+    this.isLoagin = localStorage.getItem('token') != undefined ? true : false;
+  }
 }

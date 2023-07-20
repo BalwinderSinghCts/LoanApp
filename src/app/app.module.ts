@@ -16,6 +16,7 @@ import { ViewLoanListComponent } from './loan/loan.viewlist.component';
 import { LoanDetailsComponent } from './loan/loan.details.component';
 import { LoanemiHistoryComponent } from './loanemi-history/loanemi-history.component';
 import { AddloanComponent } from './addloan/addloan.component';
+import { AddcustomerComponent } from './addcustomer/addcustomer.component';
 
 @NgModule({
   declarations: [
@@ -29,13 +30,14 @@ import { AddloanComponent } from './addloan/addloan.component';
     ViewLoanListComponent,
     LoanDetailsComponent,
     LoanemiHistoryComponent,
-    AddloanComponent
+    AddloanComponent,
+    AddcustomerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [HttpRequestHandlerService],
   bootstrap: [AppComponent]

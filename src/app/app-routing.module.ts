@@ -4,6 +4,8 @@ import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoanComponent } from './loan/loan.component';
 import { LoanDetailsComponent } from './loan/loan.details.component';
+import { AddloanComponent } from './addloan/addloan.component';
+import { AddcustomerComponent } from './addcustomer/addcustomer.component';
 
 const routes: Routes = [
   { path: "", component: AuthComponent },
@@ -15,8 +17,13 @@ const routes: Routes = [
     pathMatch:'full'
   },
   {
-    path: 'loan/add',
-    component: LoanDetailsComponent,
+    path: 'addloan',
+    component: AddloanComponent,
+    pathMatch:'full'
+  },
+  {
+    path: 'addcustomer',
+    component: AddcustomerComponent,
     pathMatch:'full'
   }
 ];
