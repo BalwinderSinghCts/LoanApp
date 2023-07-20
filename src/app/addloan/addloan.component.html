@@ -9,36 +9,6 @@
         <div class="card-body">
             <form [formGroup]='loanApp' (ngSubmit)="applicationReg()">
                 <div class="form-group">
-                    <label for="usermob">Mobile Number</label>
-                    <input class="form-control" type="number" id="usermob" name="usermob" formControlName="usermob"
-                        placeholder="Enter user mobile number">
-                    <!-- <span style="color: red;"
-                        *ngIf="loanApp.get('usermob') && (loanApp.get('usermob').touched||loanApp.get('usermob').dirty) && loanApp.get('usermob').invalid">
-                        <span *ngIf="loanApp.get('usermob').errors.required">
-                            *this field is required
-                        </span>
-                        <span *ngIf="loanApp.get('usermob').errors.pattern">
-                            *mobile number should contain 10 digits
-                        </span>
-                    </span> -->
-                </div>
-                <div class="form-group">
-                    <label for="useradhaar">Adhaar No</label>
-                    <input class="form-control" type="number" id="useradhaar" name="useradhaar"
-                        formControlName="useradhaar" placeholder="Enter user adhaar number">
-                    <!-- <span style="color: red;"
-                        *ngIf="loanApp.get('useradhaar') && (loanApp.get('useradhaar').touched||loanApp.get('useradhaar').dirty) && loanApp.get('useradhaar').invalid">
-                        <span *ngIf="loanApp.get('useradhaar').errors.required">
-                            *this field is required
-                        </span>
-                        <span *ngIf="loanApp.get('useradhaar').errors.pattern">
-                            *adhaar number should contain 12 digits
-                        </span>
-
-                    </span> -->
-                </div>
-
-                <div class="form-group">
                     <label for="loantype">Loan Type</label>
                     <select class="form-control" id="loantype" name="loantype" formControlName="loantype"
                         (change)="takeAmount(1)">
@@ -76,7 +46,38 @@
                         *invalid amount, for this perticular loan type minimum loan amount should be {{loanValid}}
                     </span> -->
                 </div>
-                <button [disabled]='loanApp.invalid' type="submit" class="btn btn-primary">Apply</button>
+
+                <div class="form-group">
+                    <label for="usermob">Loan term</label>
+                    <input class="form-control" type="text" id="loanterm" name="loanterm" formControlName="loanterm"
+                        placeholder="Enter loan term">
+                    <!-- <span style="color: red;"
+                        *ngIf="loanApp.get('usermob') && (loanApp.get('usermob').touched||loanApp.get('usermob').dirty) && loanApp.get('usermob').invalid">
+                        <span *ngIf="loanApp.get('usermob').errors.required">
+                            *this field is required
+                        </span>
+                        <span *ngIf="loanApp.get('usermob').errors.pattern">
+                            *mobile number should contain 10 digits
+                        </span>
+                    </span> -->
+                </div>
+
+                <div class="form-group">
+                    <label for="loanRateOfinterst">Rate of Interst</label>
+                    <input class="form-control" type="text" id="loanRateOfinterst" name="loanRateOfinterst" 
+                    formControlName="loanRateOfinterst"
+                        placeholder="Enter Rate Of interst">
+                    <!-- <span style="color: red;"
+                        *ngIf="loanApp.get('usermob') && (loanApp.get('usermob').touched||loanApp.get('usermob').dirty) && loanApp.get('usermob').invalid">
+                        <span *ngIf="loanApp.get('usermob').errors.required">
+                            *this field is required
+                        </span>
+                        <span *ngIf="loanApp.get('usermob').errors.pattern">
+                            *mobile number should contain 10 digits
+                        </span>
+                    </span> -->
+                </div>
+                <button [disabled]='loanApp.invalid' type="submit" class="btn btn-primary mt-2">Apply</button>
             </form>
         </div>
     </div>

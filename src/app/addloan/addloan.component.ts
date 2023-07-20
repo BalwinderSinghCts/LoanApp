@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpRequestHandlerService } from 'src/service/http.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-addloan',
@@ -8,7 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./addloan.component.css']
 })
 export class AddloanComponent {
-  constructor(private fb: FormBuilder, public router: Router) { }
+  constructor(private http: HttpRequestHandlerService,private fb: FormBuilder, public router: Router) { }
+  private apiURL = 'api/loan/v1/Addloan'
 
   loanApp: FormGroup = new FormGroup({});
   listOfLoans: Array<any> = new Array<any>();
@@ -17,11 +20,13 @@ export class AddloanComponent {
 
   ngOnInit() {
     //reactive form validation
+    //Validators.pattern("^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$")
+    //Validators.pattern("^([\+0]91)?\-?[7-9]{1}[0-9]{9}$")
     this.loanApp = this.fb.group({
-      usermob: ['', [Validators.required, Validators.pattern("^([\+0]91)?\-?[7-9]{1}[0-9]{9}$")]],
-      useradhaar: ['', [Validators.required, Validators.pattern("^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$")]],
       loantype: ['', [Validators.required,]],
       loanamt: ['', [Validators.required, Validators.max(2500000), Validators.pattern("[0-9]*")]],
+      loanterm: ['', [Validators.required]],
+      loanRateOfinterst:['',[Validators.required]]
     })
     let loantype = [
       { Id: 1, Name: "Personal Loan" },
@@ -31,6 +36,7 @@ export class AddloanComponent {
       { Id: 5, Name: "Gold Loan" },
     ]
     this.listOfLoans=loantype;
+
     //retrieves list of loans
     // this.loanService.getAllLoans().subscribe(data => {
     //   this.listOfLoans = data;
@@ -40,17 +46,29 @@ export class AddloanComponent {
 
   // method of applying for a loan after login 
   applicationReg() {
+    debugger
+    console.log(this.loanApp)
     // console.log(this.loanApp.value);
     let customer = "";//JSON.parse(localStorage.getItem('userdata'));
     let applForm = {
-      userid: "",
-      usermob: this.loanApp.value.usermob,
-      useradhaar: this.loanApp.value.useradhaar,
-      loanid: this.loanApp.value.loantype,
-      loanamt: this.loanApp.value.loanamt,
-      appstatus: 'Requested',
+      CustomerId: 1,
+      Amount: this.loanApp.value.loanamt,
+      LoanTerm: this.loanApp.value.loanterm,
+      RateOfinterst: this.loanApp.value.loanRateOfinterst,
+      LoanType: this.loanApp.value.loantype,
+      CreatedBy: 1,
     }
-
+    this.http.post(this.apiURL, applForm).subscribe(
+      (response: any) => {
+        console.log(response);
+        if (response.IsSuccess) {
+          this.successNotification(response.Message);
+        }
+      },
+      (error: any) => {
+        throw error
+      }
+    )
     // this.applService.getAllApp().subscribe(resp => {
     //   // console.log(resp);
     //   // console.log(applForm.userid);
@@ -99,5 +117,9 @@ export class AddloanComponent {
     //this.loanAmount = Number(localStorage.getItem('amount'));
     //this.loanValid = Number(localStorage.getItem('amount'));
     //localStorage.removeItem('amount');
+  }
+
+  successNotification(message: string) {
+    Swal.fire('', message, 'success');
   }
 }
