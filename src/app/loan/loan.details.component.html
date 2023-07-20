@@ -1,12 +1,3 @@
-<div class="col-md-12">
-    <h1>Loan Details - {{loanData.LoanNumber}}</h1>
-    <hr>
-
-    <div class="col-md-10">
-
-    </div>
-</div>
-
 <section style="background-color: #eee;">
     <div class="container py-5">
         <!-- <div class="row">
@@ -133,11 +124,11 @@
                                 </p>
                                 <hr>
                                 <p class="mb-1" style="font-size: .77rem;"></p>
-                                <app-loanemi-history [loanhistory]="loanData.LoanHistory"></app-loanemi-history>
+                                <app-loanemihistory [loanhistory]="loanData.LoanHistory"></app-loanemihistory>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div hidden class="col-md-6 ">
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
                                 <p class="mb-4"><span class="text-primary font-italic me-1">Loan History</span>

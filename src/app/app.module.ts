@@ -17,6 +17,11 @@ import { LoanDetailsComponent } from './loan/loan.details.component';
 import { LoanemiHistoryComponent } from './loanemi-history/loanemi-history.component';
 import { AddloanComponent } from './addloan/addloan.component';
 import { AddcustomerComponent } from './addcustomer/addcustomer.component';
+import { NavheaderComponent } from './navheader/navheader.component';
+import { CustomerComponent } from './customer/customer.component';
+import { CustomerdetailComponent } from './customerdetail/customerdetail.component';
+import { CustomerService } from 'src/service/customer.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -31,15 +36,19 @@ import { AddcustomerComponent } from './addcustomer/addcustomer.component';
     LoanDetailsComponent,
     LoanemiHistoryComponent,
     AddloanComponent,
-    AddcustomerComponent
+    AddcustomerComponent,
+    NavheaderComponent,
+    CustomerComponent,
+    CustomerdetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxSpinnerModule
   ],
-  providers: [HttpRequestHandlerService],
+  providers: [HttpRequestHandlerService,CustomerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

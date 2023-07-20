@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Customer } from 'src/model/customer';
+import { CustomerService } from 'src/service/customer.service';
 import { HttpRequestHandlerService } from 'src/service/http.service';
 import Swal from 'sweetalert2';
 
@@ -10,24 +13,29 @@ import Swal from 'sweetalert2';
   styleUrls: ['./addloan.component.css']
 })
 export class AddloanComponent {
-  constructor(private http: HttpRequestHandlerService,private fb: FormBuilder, public router: Router) { }
+  constructor(private http: HttpRequestHandlerService,
+    private fb: FormBuilder,
+    public router: Router,
+    private actRoute: ActivatedRoute,
+    private customerService: CustomerService,
+    private SpinnerService: NgxSpinnerService
+  ) { }
   private apiURL = 'api/loan/v1/Addloan'
 
   loanApp: FormGroup = new FormGroup({});
   listOfLoans: Array<any> = new Array<any>();
-  loanAmount = null;
+  loanAmount: string = "";
+  loantype: string = "";
   loanValid = null;
-
+  customerId = "";
+  userId = "";
+  buttonText: boolean = false;
+  customerdata: Customer = new Customer();
   ngOnInit() {
+    console.log(this.actRoute.snapshot);
     //reactive form validation
     //Validators.pattern("^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$")
     //Validators.pattern("^([\+0]91)?\-?[7-9]{1}[0-9]{9}$")
-    this.loanApp = this.fb.group({
-      loantype: ['', [Validators.required,]],
-      loanamt: ['', [Validators.required, Validators.max(2500000), Validators.pattern("[0-9]*")]],
-      loanterm: ['', [Validators.required]],
-      loanRateOfinterst:['',[Validators.required]]
-    })
     let loantype = [
       { Id: 1, Name: "Personal Loan" },
       { Id: 2, Name: "Home Loan" },
@@ -35,40 +43,97 @@ export class AddloanComponent {
       { Id: 4, Name: "Bike Loan" },
       { Id: 5, Name: "Gold Loan" },
     ]
-    this.listOfLoans=loantype;
+    this.listOfLoans = loantype;
+    this.customerId = this.actRoute.snapshot.params['Id'];
+    this.userId = JSON.parse(localStorage.getItem('userData') || '{}')['userid'];
+    if (this.actRoute.snapshot.url[2].path == 'apply') {
+      this.loanApp = this.fb.group({
+        loantype: ['', [Validators.required,]],
+        loanamt: ['', [Validators.required, Validators.max(2500000)]],
+        loanterm: ['', [Validators.required]],
+        loanRateOfinterst: ['', [Validators.required]]
+      })
+      console.log(this.customerId);
+      this.getCustomerDetails();
+    } else {
+      this.http.get('api/loan/v1/loanDetail?loanNumber=' + this.customerId).subscribe(
+        (response: any) => {
+          console.log(response)
+          console.log(response.Data.LoanType)
+          console.log(response.Data.Amount)
+          this.loanApp = this.fb.group({
+            loantype: ['', [Validators.required]],
+            loanamt: [response.Data.Amount, [Validators.required, Validators.max(2500000)]],
+            loanterm: [response.Data.LoanTerm, [Validators.required]],
+            loanRateOfinterst: [response.Data.RateOfinterst, [Validators.required]]
+          })
+          this.loantype = response.Data.LoanType;
+          this.loanAmount = response.Data.Amount;
+          this.loanApp.get('loanRateOfinterst')?.disable({ onlySelf: true });
+          console.log(this.customerId);
+          this.buttonText = true;
+          this.getCustomerDetails();
+        },
+        () => { }
+      )
 
-    //retrieves list of loans
-    // this.loanService.getAllLoans().subscribe(data => {
-    //   this.listOfLoans = data;
-    //   // console.log(this.listOfLoans);
-    // })
+    }
+
   }
 
   // method of applying for a loan after login 
   applicationReg() {
     debugger
+    this.SpinnerService.show(); 
+
     console.log(this.loanApp)
-    // console.log(this.loanApp.value);
-    let customer = "";//JSON.parse(localStorage.getItem('userdata'));
     let applForm = {
-      CustomerId: 1,
+      CustomerId: this.customerId,
       Amount: this.loanApp.value.loanamt,
       LoanTerm: this.loanApp.value.loanterm,
       RateOfinterst: this.loanApp.value.loanRateOfinterst,
       LoanType: this.loanApp.value.loantype,
-      CreatedBy: 1,
+      UserId: this.userId,
+      LoanNumber: this.buttonText ? this.customerId : ''
     }
-    this.http.post(this.apiURL, applForm).subscribe(
-      (response: any) => {
-        console.log(response);
-        if (response.IsSuccess) {
-          this.successNotification(response.Message);
+    if (!this.buttonText) {
+
+      applForm.LoanNumber = this.customerId;
+      this.http.post(this.apiURL, applForm).subscribe(
+        (response: any) => {
+          this.SpinnerService.hide(); 
+
+          console.log(response);
+          if (response.IsSuccess) {
+            this.successNotification(`${response.Message} +
+            Loan-Id ${response.Data.LoanNumber}
+            `);
+          }
+        },
+        (error: any) => {
+          throw error
         }
-      },
-      (error: any) => {
-        throw error
-      }
-    )
+      )
+    } else {
+      console.log(applForm)
+
+      this.http.post('api/loan/v1/UpdateLoan', applForm).subscribe(
+        (response: any) => {
+          console.log('update data: ',response);
+        this.SpinnerService.hide(); 
+
+          if (response.IsSuccess) {
+            this.successNotification(`${response.Message} +
+            Loan-Id ${response.Data.LoanNumber}
+            `);
+          }
+        },
+        (error: any) => {
+          throw error
+        }
+      )
+    }
+
     // this.applService.getAllApp().subscribe(resp => {
     //   // console.log(resp);
     //   // console.log(applForm.userid);
@@ -107,7 +172,9 @@ export class AddloanComponent {
   }
 
   // method of retreiving loan amount based on loan id
-  takeAmount(value: Number) {
+  takeAmount(event: any) {
+    console.log(this.loanApp.value.loantype)
+
     // this.listOfLoans.forEach(element => {
     //   if (element.LoanId == value) {
     //     // console.log(this.loanAmount);
@@ -122,4 +189,24 @@ export class AddloanComponent {
   successNotification(message: string) {
     Swal.fire('', message, 'success');
   }
+  getCustomerDetails() {
+    this.SpinnerService.show(); 
+    var data = this.customerService.getCustomerDetails(this.customerId).subscribe(
+      (response: any) => {
+        this.SpinnerService.hide(); 
+        console.log(response)
+        if (response.IsSuccess) {
+          this.customerdata = response.Data;
+        }
+      },
+      (error: any) => {
+        this.SpinnerService.hide(); 
+
+        console.log(error)
+
+      }
+    );
+    console.log(data);
+  }
+
 }

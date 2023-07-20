@@ -1,86 +1,100 @@
 <br>
 <br>
+<div class="row">
+    <div class="col-md-1 clearfix"></div>
+    <div class="col-md-5">
+        <!-- <h4 class="text-dark text-center">Make Loan</h4>
+    <br> -->
+        <div class="card shadow-lg">
+            <div style="background-color: #143b64;" class="card-header text-light">Customer Details</div>
+            <div class="card-body">
+                <app-customerdetail [customer]="customerdata"></app-customerdetail>
+            </div>
+        </div>
+        <div class="card-footer shadow-lg" style="background-color: #143b64;">
+        </div>
+    </div>
+    <div class="col-md-5">
+        <!-- <h4 class="text-dark text-center">Make Loan</h4>
+    <br> -->
+        <div class="card shadow-lg">
+            <div style="background-color: #143b64;" class="card-header text-light">Loan Application</div>
+            <div class="card-body">
+                <form [formGroup]='loanApp' (ngSubmit)="applicationReg()">
+                    <div class="form-group">
+                        <label for="loantype">Loan Type</label>
+                        <select [(ngModel)]="loantype" class="form-control" id="loantype" name="loantype"
+                            formControlName="loantype" (change)="takeAmount($event)">
+                            <option selected value="" disabled>Choose...</option>
+                            <option *ngFor='let loan of listOfLoans' [value]="loan.Id">
+                                {{loan.Name}}
+                            </option>
+                        </select>
 
-<div class="col-md-6 offset-3">
-    <h4 class="text-dark text-center">Make Loan</h4>
-    <br>
-    <div class="card shadow-lg">
-        <div style="background-color: #143b64;" class="card-header text-light">Loan Application</div>
-        <div class="card-body">
-            <form [formGroup]='loanApp' (ngSubmit)="applicationReg()">
-                <div class="form-group">
-                    <label for="loantype">Loan Type</label>
-                    <select class="form-control" id="loantype" name="loantype" formControlName="loantype"
-                        (change)="takeAmount(1)">
-                        <option selected value="" disabled>Choose...</option>
-                        <option *ngFor='let loan of listOfLoans' [value]="loan.Id">
-                            {{loan.Id}} - {{loan.Name}}
-                        </option>
-                    </select>
-
-                    <!-- <span style="color: red;"
-                        *ngIf="loanApp.get('loantype') && (loanApp.get('loantype').touched||loanApp.get('loantype').dirty) && loanApp.get('loantype').invalid">
-                        <span *ngIf="loanApp.get('loantype').errors.required">
-                            *this field is required
+                        <span style="color: red;"
+                            *ngIf="loanApp.get('loantype') && (loanApp.get('loantype')?.touched||loanApp.get('loantype')?.dirty) && loanApp.get('loantype')?.invalid">
+                            <span>
+                                *this field is required
+                            </span>
                         </span>
-                    </span> -->
-                </div>
-                <div class="form-group">
-                    <label for="loanamt">Loan Amount</label>
-                    <input [(ngModel)]='loanAmount' class="form-control" type="number" id="loanamt" name="loanamt"
-                        formControlName="loanamt" placeholder="Choose the loan type first">
-                    <!-- <span style="color: red;"
-                        *ngIf="loanApp.get('loanamt') && (loanApp.get('loanamt').touched||loanApp.get('loanamt').dirty) && loanApp.get('loanamt').invalid">
-                        <span *ngIf="loanApp.get('loanamt').errors.required">
-                            *this field is required
+                    </div>
+                    <div class="form-group">
+                        <label for="loanamt">Loan Amount</label>
+                        <input [(ngModel)]="loanAmount" class="form-control" type="text" id="loanamt" name="loanamt"
+                            formControlName="loanamt" placeholder="Choose the loan type first">
+                        <span style="color: red;"
+                            *ngIf="loanApp.get('loanamt') && (loanApp.get('loanamt')?.touched||loanApp.get('loanamt')?.dirty) && loanApp.get('loanamt')?.invalid">
+                            <span>
+                                *this field is required
+                            </span>
                         </span>
-                        <span *ngIf="loanApp.get('loanamt').errors.pattern">
-                            *invalid amount
-                        </span>
-                        <span *ngIf="loanApp.get('loanamt').errors.max">
-                            *invalid amount, amount should not be greater than 25 lakh
-                        </span>
-                    </span>
+                        <!-- 
                     <span style="color: red;"
                         *ngIf="loanAmount<loanValid && (loanApp.get('loanamt').touched||loanApp.get('loanamt').dirty)">
                         *invalid amount, for this perticular loan type minimum loan amount should be {{loanValid}}
                     </span> -->
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="usermob">Loan term</label>
-                    <input class="form-control" type="text" id="loanterm" name="loanterm" formControlName="loanterm"
-                        placeholder="Enter loan term">
-                    <!-- <span style="color: red;"
-                        *ngIf="loanApp.get('usermob') && (loanApp.get('usermob').touched||loanApp.get('usermob').dirty) && loanApp.get('usermob').invalid">
-                        <span *ngIf="loanApp.get('usermob').errors.required">
-                            *this field is required
+                    <div class="form-group">
+                        <label for="usermob">Loan term(In-months)</label>
+                        <input class="form-control" type="text" id="loanterm" name="loanterm" formControlName="loanterm"
+                            placeholder="Enter loan term">
+                        <span style="color: red;"
+                            *ngIf="loanApp.get('loanterm') && (loanApp.get('loanterm')?.touched||loanApp.get('loanterm')?.dirty) && loanApp.get('loanterm')?.invalid">
+                            <span>
+                                *this field is required
+                            </span>
                         </span>
-                        <span *ngIf="loanApp.get('usermob').errors.pattern">
-                            *mobile number should contain 10 digits
-                        </span>
-                    </span> -->
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="loanRateOfinterst">Rate of Interst</label>
-                    <input class="form-control" type="text" id="loanRateOfinterst" name="loanRateOfinterst" 
-                    formControlName="loanRateOfinterst"
-                        placeholder="Enter Rate Of interst">
-                    <!-- <span style="color: red;"
-                        *ngIf="loanApp.get('usermob') && (loanApp.get('usermob').touched||loanApp.get('usermob').dirty) && loanApp.get('usermob').invalid">
-                        <span *ngIf="loanApp.get('usermob').errors.required">
-                            *this field is required
-                        </span>
-                        <span *ngIf="loanApp.get('usermob').errors.pattern">
+                    <div class="form-group">
+                        <label for="loanRateOfinterst">Rate of Interst</label>
+                        <input class="form-control" type="text" id="loanRateOfinterst" name="loanRateOfinterst"
+                            formControlName="loanRateOfinterst" placeholder="Enter Rate Of interst">
+                        <span style="color: red;"
+                            *ngIf="loanApp.get('loanRateOfinterst') && (loanApp.get('loanRateOfinterst')?.touched||loanApp.get('loanRateOfinterst')?.dirty) && loanApp.get('loanRateOfinterst')?.invalid">
+                            <span>
+                                *this field is required
+                            </span>
+                            <!-- <span *ngIf="loanApp.get('usermob').errors.pattern">
                             *mobile number should contain 10 digits
+                        </span> -->
                         </span>
-                    </span> -->
-                </div>
-                <button [disabled]='loanApp.invalid' type="submit" class="btn btn-primary mt-2">Apply</button>
-            </form>
+                    </div>
+                    <button [disabled]='loanApp.invalid' type="submit"
+                        class="btn btn-primary mt-2">
+                        {{!buttonText?'Apply':'Update'}}
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="card-footer shadow-lg" style="background-color: #143b64;">
         </div>
     </div>
-    <div class="card-footer shadow-lg" style="background-color: #143b64;">
-    </div>
+    <div class="col-md-1 clearfix"></div>
+
 </div>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+    <p style="color: white">Please Wait. </p>  
+    </ngx-spinner> 

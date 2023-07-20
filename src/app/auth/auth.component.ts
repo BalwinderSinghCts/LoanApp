@@ -29,12 +29,12 @@ export class AuthComponent {
     let userObj = { email: this.loginForm.value.email, password: this.loginForm.value.password };
     const headers = new HttpHeaders().set('Content-Type', 'application/json')
     this.httpClient.post<any>(apiURL, userObj).subscribe(
-      (res) => {
-        localStorage.setItem('userData', JSON.stringify(res.value))
-        localStorage.setItem('token', JSON.stringify(res?.value?.access_token));
+      (res:any) => {
+        localStorage.setItem('userData', JSON.stringify(res.Value))
+        localStorage.setItem('token', JSON.stringify(res?.Value?.access_token));
         this.router.navigate(['dashboard']);
         console.log(res)
-      }, (err) => {
+      }, (err:any) => {
         console.log(err)
       });
   }
