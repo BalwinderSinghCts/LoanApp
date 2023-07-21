@@ -16,6 +16,7 @@ export class Loan {
     LoanNumber: string = "";
     LoanStatus: string = "";
     LoanType: string = "";
+    LoanTypeName:string="";
     LoanTerm: string = "";
     Amount: string = "";
     RateOfinterst: string = "";

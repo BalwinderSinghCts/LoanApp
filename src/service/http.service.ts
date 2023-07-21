@@ -20,9 +20,10 @@ export class HttpRequestHandlerService {
 
     public post<T>(url: string, body: T, headers?: HttpHeaders, params?: HttpParams): Observable<T> {
         headers = headers ? headers : this.defaultHeader;
-        return this.http.post<T>(this.baseURL + url, body, { headers, params }).pipe(
-            catchError(this.handleErrorResponce)
-        )
+        return this.http.post<T>(this.baseURL + url, body, { headers, params })
+        // .pipe(
+        //     catchError(this.handleErrorResponce)
+        // )
     }
 
     private handleErrorResponce(error: HttpErrorResponse): Observable<never> {
