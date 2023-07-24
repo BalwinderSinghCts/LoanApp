@@ -24,6 +24,8 @@ import { CustomerService } from 'src/service/customer.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { JwtModule } from '@auth0/angular-jwt';
 import { config } from 'rxjs';
+import { UserService } from 'src/service/user.service';
+import { AlertMessageService } from './alert-message.service';
 
 @NgModule({
   declarations: [
@@ -52,13 +54,13 @@ import { config } from 'rxjs';
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return (localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') || '{}')['token']:null)
+          return (sessionStorage.getItem('userData') ? JSON.parse(sessionStorage.getItem('userData') || '{}')['token']:null)
         }
       }
     })
   ],
   providers: [
-    HttpRequestHandlerService, CustomerService,
+    HttpRequestHandlerService, CustomerService,UserService,AlertMessageService
   ],
   bootstrap: [AppComponent]
 })

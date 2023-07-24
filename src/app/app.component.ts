@@ -13,7 +13,7 @@ export class AppComponent {
    *
    */
   constructor(private jwtServiceHelper: JwtHelperService) {
-    this.isLoagin = localStorage.getItem('token') != undefined ? true : false;
+    this.isLoagin = sessionStorage.getItem('token') != undefined ? true : false;
     
   }
 
