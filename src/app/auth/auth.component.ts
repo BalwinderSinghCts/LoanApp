@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpRequestHandlerService } from 'src/service/http.service';
+import { UserService } from 'src/service/user.service';
+import { AlertMessageService } from '../alert-message.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,7 +15,7 @@ export class AuthComponent {
   /**
    *
    */
-  constructor(private router: Router, private httpClient: HttpRequestHandlerService, private http: HttpClient) {
+  constructor(private alerMessage: AlertMessageService, private userService: UserService, private router: Router, private httpClient: HttpRequestHandlerService, private http: HttpClient) {
 
   }
   loginForm = new FormGroup({
@@ -27,15 +29,23 @@ export class AuthComponent {
     console.log(this.loginForm);
     const apiURL = 'api/Account/v1/userlogin';
     let userObj = { email: this.loginForm.value.email, password: this.loginForm.value.password };
-    const headers = new HttpHeaders().set('Content-Type', 'application/json')
-    this.httpClient.post<any>(apiURL, userObj).subscribe(
-      (res:any) => {
-        localStorage.setItem('userData', JSON.stringify(res.Value))
-        localStorage.setItem('token', JSON.stringify(res?.Value?.access_token));
-        this.router.navigate(['dashboard']);
-        console.log(res)
-      }, (err:any) => {
+    //const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    var data = this.userService.login(userObj).subscribe(
+      (res: any) => {
+        debugger
+        if (res.Value != undefined && res.Value != null && parseInt(res.Value.userid) > 0) {
+          sessionStorage.setItem('userData', JSON.stringify(res.Value))
+          sessionStorage.setItem('token', JSON.stringify(res?.Value?.access_token));
+          console.log(res)
+          this.router.navigate(['dashboard']);
+        } else {
+          this.userService.logout();
+          this.router.navigate(['']);
+          this.alerMessage.errorNotification('Some thing went worng');
+        }
+      }, (err: any) => {
         console.log(err)
+        this.alerMessage.errorNotification('Some thing went worng');
       });
   }
 }

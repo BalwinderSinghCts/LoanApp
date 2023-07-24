@@ -1,5 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Loan } from "src/model/loan";
+import { UserService } from "src/service/user.service";
 
 @Component({
     selector: 'app-viewlist',
@@ -7,7 +8,19 @@ import { Loan } from "src/model/loan";
 })
 
 
-export class ViewLoanListComponent {
+export class ViewLoanListComponent implements OnInit {
+    /**
+     *
+     */
+    isLogin: boolean = true;
+    userDataRole: any = null;
+    constructor(private userService: UserService) {
+
+    }
+    ngOnInit(): void {
+        this.isLogin = this.userService.tokenIsvalidOrNo();
+        this.userDataRole = JSON.parse(sessionStorage.getItem('userData') || '{}')['role']
+    }
     @Input()
     loandatalist: Array<Loan> = new Array<Loan>();
 }

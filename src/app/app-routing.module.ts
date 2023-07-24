@@ -7,10 +7,16 @@ import { LoanDetailsComponent } from './loan/loan.details.component';
 import { AddloanComponent } from './addloan/addloan.component';
 import { AddcustomerComponent } from './addcustomer/addcustomer.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CanActivateGuardService } from './can-activate-guard.service';
 
 const routes: Routes = [
   { path: "", component: AuthComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [CanActivateGuardService],
+    data: { roles: ['admin', 'user'] }
+  },
   {
     path: 'loan', component: LoanComponent,
   },
@@ -18,39 +24,42 @@ const routes: Routes = [
     path: 'loan/:Id/apply',
     component: AddloanComponent,
     pathMatch: 'full',
+    canActivate: [CanActivateGuardService],
+    data: { roles: ['admin'] }
+
   },
   {
     path: 'loan/:Id/update',
     component: AddloanComponent,
     pathMatch: 'full',
+    canActivate: [CanActivateGuardService],
+    data: { roles: ['admin'] }
   },
   {
     path: 'loan/:id/detail',
     component: LoanDetailsComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [CanActivateGuardService],
+    data: { roles: ['admin', 'user'] }
+
   },
   {
     path: 'addcustomer',
     component: AddcustomerComponent,
-    pathMatch: 'full'
-  }
-  ,
+    pathMatch: 'full',
+    canActivate: [CanActivateGuardService],
+    data: { roles: ['admin'] }
+  },
   {
     path: 'customer',
     component: CustomerComponent,
-    pathMatch: 'full',
-    // children:[
-    //   {
-    //     path: 'addcustomer',
-    //     component: AddcustomerComponent,
-    //     pathMatch: 'full'
-    //   }
-    // ]
+    pathMatch: 'full', canActivate: [CanActivateGuardService],
+    data: { roles: ['admin', 'user'] }
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

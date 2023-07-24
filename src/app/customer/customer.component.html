@@ -2,24 +2,24 @@
     <div class="col">
         <h4 class="text-dark text-center">Welcome to customer page</h4>
     </div>
-    
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Phone No</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of customerlist">
-            <td>{{item.FirstName}}</td>
-            <td>{{item.LastName}}</td>
-            <td>{{item.PhoneNumber}}</td>
-            <td><a routerLink="/loan/{{item.Id}}/apply">Apply Loan</a></td>
-        </tr>
 
-    </tbody>
-</table>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Phone No</th>
+                <th *ngIf="isLogin && userDataRole =='Admin'">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of customerlist">
+                <td>{{item.FirstName}}</td>
+                <td>{{item.LastName}}</td>
+                <td>{{item.PhoneNumber}}</td>
+                <td *ngIf="isLogin && userDataRole =='Admin'"><a routerLink="/loan/{{item.Id}}/apply">Apply Loan</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

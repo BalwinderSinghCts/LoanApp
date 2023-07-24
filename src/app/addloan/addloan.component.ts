@@ -84,7 +84,7 @@ export class AddloanComponent {
   // method of applying for a loan after login 
   applicationReg() {
     debugger
-    this.SpinnerService.show(); 
+    this.SpinnerService.show();
 
     console.log(this.loanApp)
     let applForm = {
@@ -101,7 +101,7 @@ export class AddloanComponent {
       applForm.LoanNumber = this.customerId;
       this.http.post(this.apiURL, applForm).subscribe(
         (response: any) => {
-          this.SpinnerService.hide(); 
+          this.SpinnerService.hide();
 
           console.log(response);
           if (response.IsSuccess) {
@@ -119,13 +119,14 @@ export class AddloanComponent {
 
       this.http.post('api/loan/v1/UpdateLoan', applForm).subscribe(
         (response: any) => {
-          console.log('update data: ',response);
-        this.SpinnerService.hide(); 
+          console.log('update data: ', response);
+          this.SpinnerService.hide();
 
           if (response.IsSuccess) {
-            this.successNotification(`${response.Message} +
+            this.successNotification(`${response.Message} 
             Loan-Id ${response.Data.LoanNumber}
             `);
+            this.router.navigate(['loan/' + response.Data.LoanNumber +'/detail'])
           }
         },
         (error: any) => {
@@ -190,17 +191,17 @@ export class AddloanComponent {
     Swal.fire('', message, 'success');
   }
   getCustomerDetails() {
-    this.SpinnerService.show(); 
+    this.SpinnerService.show();
     var data = this.customerService.getCustomerDetails(this.customerId).subscribe(
       (response: any) => {
-        this.SpinnerService.hide(); 
+        this.SpinnerService.hide();
         console.log(response)
         if (response.IsSuccess) {
           this.customerdata = response.Data;
         }
       },
       (error: any) => {
-        this.SpinnerService.hide(); 
+        this.SpinnerService.hide();
 
         console.log(error)
 

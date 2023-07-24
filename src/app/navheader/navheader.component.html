@@ -1,6 +1,28 @@
-
-<nav class="navbar navbar-expand-lg" style="background-color:#253c52" >
-    <div class="container">
+<nav *ngIf="isLogin && userData !=null" class="navbar navbar-expand-lg" style="background-color:#253c52">
+    <!-- <nav style="background-color: green;" class="navbar navbar-expand-lg navbar-light bg-light p-0"> -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" width="100%" id="navbarNav">
+        <ul class="navbar-nav" style="height: 4rem;">
+            <li class="nav-item">
+                <a class="nav-link p-3" routerLink="['dashboard']">Loan Management</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-3" routerLink="/dashboard">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-3" routerLink="/customer">Customer</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-3" routerLink="/loan">View Loan</a>
+            </li>
+        </ul>
+    </div>
+    <!-- <a class="nav-item mr-3 nav-link p-3" href="{% url 'logout' %}" style="background-color: #e85c29">Logout</a> -->
+    <!-- </nav> -->
+    <!-- <div class="container">
         <a class="navbar-brand" routerLink="/dashboard">
             <i class="bi-back"></i>
             <span>Loan Management</span>
@@ -24,25 +46,19 @@
                 <li class="nav-item">
                     <a class="nav-link click-scroll" routerLink="/loan">View Loan</a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link click-scroll" routerLink="/customer">Customer</a>
                 </li>
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" routerLink="['/']" id="navbarLightDropdownMenuLink"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
-                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                        <li><a class="dropdown-item" href="topics-listing.html">Topics Listing</a></li>
-
-                        <li><a class="dropdown-item" href="contact.html">Contact Form</a></li>
-                    </ul>
-                </li> -->
+                
             </ul>
 
             <div class="d-none d-lg-block">
                 <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
             </div>
         </div>
-    </div>
+    </div>  -->
+    <a *ngIf="isLogin" class="nav-item mr-3 nav-link p-3" (click)="logout()"
+        style="cursor:pointer;background-color: #e85c29">Logout</a>
 </nav>

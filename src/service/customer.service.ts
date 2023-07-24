@@ -26,11 +26,9 @@ export class CustomerService {
     tokenDetails(): any {
         console.log(this.jwtServiceHelper.decodeToken(JSON.parse(localStorage.getItem('userData') || '{}')['access_token'] ))
         return this.jwtServiceHelper.decodeToken(JSON.parse(localStorage.getItem('userData') || '{}')['access_token'] );
-        
     }
     tokenExp(): any {
         console.log(this.jwtServiceHelper.getTokenExpirationDate())
         return this.jwtServiceHelper.getTokenExpirationDate();
-        
     }
 }

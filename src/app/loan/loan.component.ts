@@ -33,7 +33,7 @@ export class LoanComponent {
         console.log(response)
         if (response.IsSuccess) {
           this.loanDataList = response.ListData;
-          console.log('Loan data List: ',this.loanDataList)
+          console.log('Loan data List: ', this.loanDataList)
         }
         //this.loanDataList.push();
       },

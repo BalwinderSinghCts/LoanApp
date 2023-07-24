@@ -13,7 +13,7 @@
             <td>{{item.FirstName}}</td>
             <td>{{item.LastName}}</td>
             <td>{{item.LoanNumber}}</td>
-            <td><a routerLink="/loan/{{item.LoanNumber}}/detail">View</a>|<a [routerLink]="['/loan', item.LoanNumber, 'update']">Edit</a></td>
+            <td><a routerLink="/loan/{{item.LoanNumber}}/detail">View</a><span *ngIf="userDataRole =='Admin' ">|</span> <a *ngIf="userDataRole =='Admin' " [routerLink]="['/loan', item.LoanNumber, 'update']">Edit</a></td>
         </tr>
     </tbody>
 </table>

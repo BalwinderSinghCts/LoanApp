@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Customer } from 'src/model/customer';
 import { HttpRequestHandlerService } from 'src/service/http.service';
+import { UserService } from 'src/service/user.service';
 
 @Component({
   selector: 'app-customer',
@@ -10,14 +11,18 @@ import { HttpRequestHandlerService } from 'src/service/http.service';
 export class CustomerComponent implements OnInit {
   customerlist: Array<Customer> = new Array<Customer>();
   private apiURL = 'api/customer/v1/customerlist';
+  isLogin:boolean =false;
+  userDataRole:any=null;
   /**
    *
    */
-  constructor(private http: HttpRequestHandlerService) {
+  constructor(private userService: UserService,private http: HttpRequestHandlerService) {
 
   }
   ngOnInit(): void {
     this.getCustomer();
+    this.isLogin = this.userService.tokenIsvalidOrNo();
+    this.userDataRole = JSON.parse(sessionStorage.getItem('userData') || '{}')['role']
   }
   private getCustomer() {
     this.http.get(this.apiURL).subscribe(
