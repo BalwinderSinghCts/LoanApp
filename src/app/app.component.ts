@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,9 @@ export class AppComponent {
   /**
    *
    */
-  constructor() {
+  constructor(private jwtServiceHelper: JwtHelperService) {
     this.isLoagin = localStorage.getItem('token') != undefined ? true : false;
+    
   }
+
 }

@@ -22,6 +22,8 @@ import { CustomerComponent } from './customer/customer.component';
 import { CustomerdetailComponent } from './customerdetail/customerdetail.component';
 import { CustomerService } from 'src/service/customer.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { JwtModule } from '@auth0/angular-jwt';
+import { config } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -46,9 +48,18 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return (localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') || '{}')['token']:null)
+        }
+      }
+    })
   ],
-  providers: [HttpRequestHandlerService,CustomerService],
+  providers: [
+    HttpRequestHandlerService, CustomerService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
