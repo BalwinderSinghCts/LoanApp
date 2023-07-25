@@ -9,6 +9,7 @@ export class Loan {
     CustomerId: string = "";
     FirstName: string = "";
     LastName: string = "";
+    Email: string = "";
     CustomerPhone: string = "";
     CustomerAddress: string = "";
     CustomerPanNo: string = "";
