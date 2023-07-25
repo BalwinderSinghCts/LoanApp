@@ -15,7 +15,7 @@ export class LoanComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.getLoanList({ LoanNumber: "", FirstName: "", LastName: "" });
+    this.getLoanList({PageSize:20, LoanNumber: "", FirstName: "", LastName: "" });
   }
   private apiURL = 'api/loan/v1/searchLoans';
   loanDataList: Loan[] = [];
@@ -29,13 +29,14 @@ export class LoanComponent implements OnInit {
     const loanData = {
       LoanNumber: this.filterFormGroup.value.loannumber,
       FirstName: this.filterFormGroup.value.firstname,
-      LastName: this.filterFormGroup.value.lastname
+      LastName: this.filterFormGroup.value.lastname,
+      PageSize:50,
     };
     this.getLoanList(loanData);
   }
 
   getLoanList(loanData: any) {
-
+console.log(loanData)
     this.http.post(this.apiURL, loanData).subscribe(
       (response: any) => {
         console.log(response)

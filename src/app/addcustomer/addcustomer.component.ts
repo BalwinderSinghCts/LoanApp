@@ -5,14 +5,15 @@ import { Customer } from 'src/model/customer';
 import { HttpRequestHandlerService } from 'src/service/http.service';
 import Swal from 'sweetalert2';
 import { AlertMessageService } from '../alert-message.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-addcustomer',
   templateUrl: './addcustomer.component.html',
   styleUrls: ['./addcustomer.component.css']
 })
 export class AddcustomerComponent {
-  private apiURL = 'api/Customer/v1/Addcustomer'
-  constructor(private router: Router,private alertMessage: AlertMessageService, private http: HttpRequestHandlerService) {
+  private apiURL = 'api/Customer/v1/Addcustomer';
+  constructor(private SpinnerService: NgxSpinnerService,private router: Router,private alertMessage: AlertMessageService, private http: HttpRequestHandlerService) {
 
   }
   formGroupCustomer = new FormGroup({
@@ -26,6 +27,8 @@ export class AddcustomerComponent {
 
   addCustomer() {
     debugger
+    this.SpinnerService.show();
+
     console.log(this.formGroupCustomer);
     const customer = {
       FirstName: this.formGroupCustomer.value.firstname,
@@ -37,6 +40,8 @@ export class AddcustomerComponent {
     };
     this.http.post(this.apiURL, customer).subscribe(
       (response: any) => {
+    this.SpinnerService.hide();
+
         console.log(response);
         if (response.IsSuccess) {
           this.alertMessage.successNotification(response.Message);
@@ -44,6 +49,8 @@ export class AddcustomerComponent {
         }
       },
       (error: any) => {
+    this.SpinnerService.show();
+        
         this.alertMessage.errorNotification(error.Message);
         throw error
       }

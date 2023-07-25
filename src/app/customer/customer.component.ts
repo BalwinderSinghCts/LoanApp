@@ -22,7 +22,7 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     this.getCustomer();
     this.isLogin = this.userService.tokenIsvalidOrNo();
-    this.userDataRole = JSON.parse(sessionStorage.getItem('userData') || '{}')['role']
+    this.userDataRole = JSON.parse(sessionStorage.getItem('userData') || '{}')['role']?.toLowerCase()
   }
   private getCustomer() {
     this.http.get(this.apiURL).subscribe(
