@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HttpRequestHandlerService } from 'src/service/http.service';
 import { UserService } from 'src/service/user.service';
 import { AlertMessageService } from '../alert-message.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-auth',
@@ -15,7 +16,14 @@ export class AuthComponent {
   /**
    *
    */
-  constructor(private alerMessage: AlertMessageService, private userService: UserService, private router: Router, private httpClient: HttpRequestHandlerService, private http: HttpClient) {
+  constructor(private alerMessage: AlertMessageService, 
+    private userService: UserService, 
+    private router: Router, 
+    private httpClient: HttpRequestHandlerService, 
+    private http: HttpClient,
+    private SpinnerService: NgxSpinnerService
+
+    ) {
 
   }
   loginForm = new FormGroup({
@@ -25,6 +33,7 @@ export class AuthComponent {
   });
 
   onSubmit() {
+    this.SpinnerService.show();
     debugger
     console.log(this.loginForm);
     const apiURL = 'api/Account/v1/userlogin';
@@ -37,14 +46,17 @@ export class AuthComponent {
           sessionStorage.setItem('userData', JSON.stringify(res.Value))
           sessionStorage.setItem('token', JSON.stringify(res?.Value?.access_token));
           console.log(res)
+          this.SpinnerService.hide();
           this.router.navigate(['dashboard']);
         } else {
+          this.SpinnerService.hide();
           this.userService.logout();
           this.router.navigate(['']);
           this.alerMessage.errorNotification('Some thing went worng');
         }
       }, (err: any) => {
         console.log(err)
+        this.SpinnerService.hide();
         this.alerMessage.errorNotification('Some thing went worng');
       });
   }
