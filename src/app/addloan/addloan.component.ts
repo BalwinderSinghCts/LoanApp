@@ -6,6 +6,7 @@ import { Customer } from 'src/model/customer';
 import { CustomerService } from 'src/service/customer.service';
 import { HttpRequestHandlerService } from 'src/service/http.service';
 import Swal from 'sweetalert2';
+import { AlertMessageService } from '../alert-message.service';
 
 @Component({
   selector: 'app-addloan',
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./addloan.component.css']
 })
 export class AddloanComponent {
-  constructor(private http: HttpRequestHandlerService,
+  constructor(private alertMessage: AlertMessageService, private http: HttpRequestHandlerService,
     private fb: FormBuilder,
     public router: Router,
     private actRoute: ActivatedRoute,
@@ -105,13 +106,16 @@ export class AddloanComponent {
 
           console.log(response);
           if (response.IsSuccess) {
-            this.successNotification(`${response.Message} +
+            this.alertMessage.successNotification(`${response.Message} +
             Loan-Number ${response.Data.LoanNumber}
             `);
             this.router.navigate(['loan'])
           }
         },
         (error: any) => {
+          this.alertMessage.errorNotification('some thing went wrong')
+          console.error(error);
+
           throw error
         }
       )
@@ -131,6 +135,9 @@ export class AddloanComponent {
           }
         },
         (error: any) => {
+          console.error(error);
+          this.alertMessage.errorNotification('some thing went wrong')
+
           throw error
         }
       )
