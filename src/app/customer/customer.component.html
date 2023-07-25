@@ -11,7 +11,7 @@
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Phone No</th>
-                <th *ngIf="isLogin && userDataRole =='Admin'">Action</th>
+                <th *ngIf="isLogin && userDataRole =='admin'">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
                 <td>{{item.FirstName}}</td>
                 <td>{{item.LastName}}</td>
                 <td>{{item.PhoneNumber}}</td>
-                <td *ngIf="isLogin && userDataRole =='Admin'"><a routerLink="/loan/{{item.Id}}/apply">Apply Loan</a>
+                <td *ngIf="isLogin && userDataRole =='admin'"><a routerLink="/loan/{{item.Id}}/apply">Apply Loan</a>
                 </td>
             </tr>
         </tbody>
