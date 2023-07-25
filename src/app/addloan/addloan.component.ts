@@ -106,8 +106,9 @@ export class AddloanComponent {
           console.log(response);
           if (response.IsSuccess) {
             this.successNotification(`${response.Message} +
-            Loan-Id ${response.Data.LoanNumber}
+            Loan-Number ${response.Data.LoanNumber}
             `);
+            this.router.navigate(['loan'])
           }
         },
         (error: any) => {
