@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { Loan } from 'src/model/loan';
@@ -9,10 +9,13 @@ import { HttpRequestHandlerService } from 'src/service/http.service';
   templateUrl: './loan.component.html',
   styleUrls: ['./loan.component.css']
 })
-export class LoanComponent {
+export class LoanComponent implements OnInit {
 
   constructor(private http: HttpRequestHandlerService) {
 
+  }
+  ngOnInit(): void {
+    this.getLoanList({ LoanNumber: "", FirstName: "", LastName: "" });
   }
   private apiURL = 'api/loan/v1/searchLoans';
   loanDataList: Loan[] = [];
@@ -28,6 +31,11 @@ export class LoanComponent {
       FirstName: this.filterFormGroup.value.firstname,
       LastName: this.filterFormGroup.value.lastname
     };
+    this.getLoanList(loanData);
+  }
+
+  getLoanList(loanData: any) {
+
     this.http.post(this.apiURL, loanData).subscribe(
       (response: any) => {
         console.log(response)
