@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Customer } from 'src/model/customer';
 import { HttpRequestHandlerService } from 'src/service/http.service';
 import Swal from 'sweetalert2';
+import { AlertMessageService } from '../alert-message.service';
 @Component({
   selector: 'app-addcustomer',
   templateUrl: './addcustomer.component.html',
@@ -10,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class AddcustomerComponent {
   private apiURL = 'api/Customer/v1/Addcustomer'
-  constructor(private http: HttpRequestHandlerService) {
+  constructor(private router: Router,private alertMessage: AlertMessageService, private http: HttpRequestHandlerService) {
 
   }
   formGroupCustomer = new FormGroup({
@@ -37,10 +39,12 @@ export class AddcustomerComponent {
       (response: any) => {
         console.log(response);
         if (response.IsSuccess) {
-          this.successNotification(response.Message);
+          this.alertMessage.successNotification(response.Message);
+          this.router.navigate(['customer']);
         }
       },
       (error: any) => {
+        this.alertMessage.errorNotification(error.Message);
         throw error
       }
     )
